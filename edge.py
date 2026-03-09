@@ -61,10 +61,7 @@ def scan_qr(bgr: np.ndarray) -> Optional[dict]:
 while display.IsStreaming():
     img = camera.Capture()
 
-    clean_np = jetson.utils.cudaToNumpy(img).copy()
-    clean_bgr = frame_to_bgr(clean_np)
-
-    detections = net.Detect(img)
+    detections = net.Detect(img, overlay="none")
 
     for det in detections:
         if net.GetClassDesc(det.ClassID) != "person":
@@ -78,7 +75,13 @@ while display.IsStreaming():
         if now - last_scan_time.get(track_id, 0) < SCAN_COOLDOWN:
             continue
 
-        decoded = scan_qr(clean_bgr)
+        try:
+            bgr = frame_to_bgr(jetson.utils.cudaToNumpy(img))
+        except Exception as e:
+            print(f"[EDGE] frame error: {e}")
+            continue
+
+        decoded = scan_qr(bgr)
         if decoded:
             last_scan_time[track_id] = now
             event = {
