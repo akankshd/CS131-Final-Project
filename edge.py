@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import time
 from datetime import datetime
+from typing import Optional
 from pyzbar import pyzbar
 
 FOG_IP = "10.13.202.140"
@@ -32,13 +33,13 @@ pub.connect(f"tcp://{FOG_IP}:{PORT}")
 last_scan_time = {}
 
 
-def frame_to_bgr(img_np: np.ndarray) -> np.ndarray:
+def frame_to_bgr(img_np: np.ndarray) -> np.ndarray:  # type: ignore
     if img_np.shape[2] == 4:
         return cv2.cvtColor(img_np, cv2.COLOR_RGBA2BGR)
     return cv2.cvtColor(img_np, cv2.COLOR_RGB2BGR)
 
 
-def scan_code(bgr: np.ndarray) -> dict | None:
+def scan_code(bgr: np.ndarray) -> Optional[dict]:
     gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
     codes = pyzbar.decode(gray)
     for code in codes:
@@ -70,7 +71,7 @@ def scan_code(bgr: np.ndarray) -> dict | None:
     return None
 
 
-def encode_jpeg(bgr: np.ndarray) -> bytes:
+def encode_jpeg(bgr: np.ndarray) -> bytes:  # type: ignore
     _, buf = cv2.imencode(".jpg", bgr, [cv2.IMWRITE_JPEG_QUALITY, 90])
     return buf.tobytes()
 

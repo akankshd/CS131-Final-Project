@@ -6,11 +6,12 @@ import re
 import cv2
 import numpy as np
 from datetime import datetime
+from typing import Optional
 from google.cloud import bigquery
 import os
 import easyocr
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "service_account.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.path.join(os.path.dirname(__file__), "service_account.json")
 
 bq_client = bigquery.Client()
 
@@ -25,10 +26,10 @@ print("[FOG] Loading EasyOCR model (first run downloads ~100 MB)…")
 reader = easyocr.Reader(["en"], gpu=False)
 print("[FOG] EasyOCR ready.")
 
-checked_in: set[str] = set()
+checked_in = set()  # type: set
 
 
-def extract_name(image_bytes: bytes) -> str | None:
+def extract_name(image_bytes: bytes) -> Optional[str]:
     if not image_bytes:
         return None
 
