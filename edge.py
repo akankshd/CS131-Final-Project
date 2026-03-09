@@ -5,7 +5,7 @@ import zmq
 import json
 from datetime import datetime
 
-FOG_IP = "10.13.203.194"
+FOG_IP = "10.13.202.140"
 PORT = 5555
 TOPIC = "attendance"
 
@@ -15,6 +15,9 @@ LINE_P2 = (640, 720)
 ENTRY_DIRECTION = "right"
 
 net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
+net.SetTrackingEnabled(True)
+net.SetTrackingParams(minFrames=3, dropFrames=15, overlapThreshold=0.5)
+
 camera = jetson.utils.videoSource("v4l2:///dev/video0")
 display = jetson.utils.videoOutput("display://0")
 
@@ -42,6 +45,9 @@ while display.IsStreaming():
             continue
 
         track_id = det.TrackID
+        if track_id < 0:
+            continue
+
         center_x = int((det.Left + det.Right) / 2)
 
         if track_id not in track_positions:
