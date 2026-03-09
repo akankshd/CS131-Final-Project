@@ -17,8 +17,6 @@ TOPIC = "attendance"
 SCAN_COOLDOWN = 3.0
 
 net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
-net.SetTrackingEnabled(True)
-net.SetTrackingParams(minFrames=3, dropFrames=15, overlapThreshold=0.5)
 
 camera = jetson.utils.videoSource("v4l2:///dev/video0")
 display = jetson.utils.videoOutput("display://0")
