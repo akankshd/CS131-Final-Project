@@ -42,7 +42,7 @@ def scan_qr(bgr):
         raw = code.data.decode("utf-8").strip()
         if not raw:
             continue
-        print(f"[EDGE] decoded: type={code.type} data={raw!r}")
+        print("[EDGE] decoded: type=%s data=%s" % (code.type, raw.encode("ascii", "replace").decode()))
         try:
             payload = json.loads(raw)
             if isinstance(payload, dict) and payload.get("sid"):
@@ -84,10 +84,10 @@ while display.IsStreaming():
                 json.dumps(event).encode(),
                 b"",
             ])
-            print(f"[EDGE] SENT: name={decoded['name']}  sid={decoded['sid']}")
+            print("[EDGE] SENT: name=%s  sid=%s" % (decoded["name"], decoded["sid"]))
     elif now - last_log_time > 5:
         last_log_time = now
-        print(f"[EDGE] scanning... persons={len(detections)}  no QR found")
+        print("[EDGE] scanning... persons=%d  no QR found" % len(detections))
 
     display.Render(img)
     display.SetStatus("Hold QR code toward camera")
