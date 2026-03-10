@@ -1,0 +1,14 @@
+# Secrets - never commit
+service_account.json
+
+# Dependencies
+node_modules/
+
+# Local runtime data
+attendance_events.csv
+
+# Build outputs
+dist/
+__pycache__/
+*.pyc
+.vite/

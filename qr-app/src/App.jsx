@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { QRCodeCanvas } from "qrcode.react";
+import Dashboard from "./Dashboard";
 
 const COURSES = [
   "CS131 — Section 021",
@@ -9,6 +10,7 @@ const COURSES = [
 ];
 
 export default function App() {
+  const [tab, setTab] = useState("qr");
   const [form, setForm] = useState({ name: "", sid: "", course: "" });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -53,12 +55,17 @@ export default function App() {
     setError("");
   }
 
+  if (tab === "dashboard") return <Dashboard onBack={() => setTab("qr")} />;
+
   return (
     <div className="page">
       <div className="card">
         <div className="logo-row">
           <span className="logo-dot" />
           <span className="logo-text">UC Riverside · Lab Attendance</span>
+          <button className="tab-switch" onClick={() => setTab("dashboard")}>
+            Professor Dashboard →
+          </button>
         </div>
 
         {!submitted ? (
