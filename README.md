@@ -20,6 +20,9 @@ pip3 install pyzmq google-cloud-bigquery
 python3 fog.py
 ```
 
+## Dashboard (Up 24/7)
+https://cs-131-final-project-gla6tsme8-akanksh-ds-projects.vercel.app/ 
+
 
 
 
