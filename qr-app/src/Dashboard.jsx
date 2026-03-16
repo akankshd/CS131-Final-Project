@@ -144,7 +144,7 @@ export default function Dashboard({ onBack }) {
       setLastRefresh(new Date());
       setError("");
     } catch {
-      setError("Could not reach dashboard server. Is dashboard_server.py running?");
+      setError("error: dashboard.py not running?");
     } finally {
       setLoading(false);
     }
